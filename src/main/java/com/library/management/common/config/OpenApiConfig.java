@@ -19,7 +19,7 @@ public class OpenApiConfig {
                         .description("RESTful API for managing books, borrowers, and borrow records.")
                         .version("1.0.0")
                         .contact(new Contact()
-                                .name("John")
-                                .email("john@example.com")));
+                                .name("Nilar Win")
+                                .email("nilarwin@gmail.com")));
     }
 }
