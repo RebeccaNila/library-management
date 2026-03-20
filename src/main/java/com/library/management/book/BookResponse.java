@@ -1,7 +1,9 @@
 package com.library.management.book;
 
+import java.util.UUID;
+
 public record BookResponse(
-        Long id,
+        UUID id,
         String isbn,
         String title,
         String author

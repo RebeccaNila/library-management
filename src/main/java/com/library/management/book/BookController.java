@@ -1,4 +1,5 @@
 package com.library.management.book;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api/v1/books")
+@Tag(name = "Books Management", description = "Actions for creating and listing books")
 @RequiredArgsConstructor
 @Slf4j
 public class BookController {

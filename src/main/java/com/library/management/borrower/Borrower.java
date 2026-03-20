@@ -2,8 +2,10 @@ package com.library.management.borrower;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "borrowers",
@@ -16,8 +18,10 @@ import java.time.LocalDateTime;
 public class Borrower {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID) // or your existing strategy
+    @JdbcTypeCode(java.sql.Types.VARCHAR)           // Force storage as VARCHAR
+    @Column(name="borrow_id", length = 36, updatable = false, nullable = false)
+    private UUID id;
 
     @Column(nullable = false)
     private String name;
@@ -25,5 +29,11 @@ public class Borrower {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }

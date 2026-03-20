@@ -6,11 +6,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BorrowRecordRepository extends JpaRepository<BorrowRecord, UUID> {
+public interface BorrowRepository extends JpaRepository<BorrowRecord, UUID> {
 
     // Requirement #8: Check if book is already borrowed
-    boolean existsByBookIdAndReturnedAtIsNull(Long bookId);
+    boolean existsByBookIdAndReturnedAtIsNull(UUID bookId);
 
     // Find the active record for returning
-    Optional<BorrowRecord> findByBookIdAndReturnedAtIsNull(Long bookId);
+//    Optional<BorrowRecord> existsByBookBookIdAndReturnedAtIsNull(UUID bookId);
 }

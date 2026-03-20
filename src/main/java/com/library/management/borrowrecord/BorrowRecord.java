@@ -4,7 +4,7 @@ import com.library.management.book.Book;
 import com.library.management.borrower.Borrower;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
 import java.util.UUID;
 
 import java.time.LocalDateTime;
@@ -19,15 +19,10 @@ import java.time.LocalDateTime;
 public class BorrowRecord {
 
     @Id
-    @GeneratedValue
-    @UuidGenerator
-    @Column(updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID) // or your existing strategy
+    @JdbcTypeCode(java.sql.Types.VARCHAR)           // Force storage as VARCHAR
+    @Column(name = "loan_id", length = 36, updatable = false, nullable = false)
     private UUID loadId;
-//    @Id
-//    @GeneratedValue
-//    @UuidGenerator
-//    @Column(updatable = false, nullable = false)
-//    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "borrower_id", nullable = false)

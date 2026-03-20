@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class BorrowServiceImpl implements BorrowService {
 
-    private final BorrowRecordRepository borrowRepository;
+    private final BorrowRepository borrowRepository;
     private final BookRepository bookRepository;
     private final BorrowerRepository borrowerRepository;
 

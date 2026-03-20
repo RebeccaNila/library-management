@@ -1,7 +1,8 @@
 package com.library.management.borrower;
+import java.util.UUID;
 
 public record BorrowerResponse(
-        Long id,
+        UUID id,
         String name,
         String email
 

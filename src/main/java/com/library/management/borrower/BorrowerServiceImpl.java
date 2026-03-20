@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -36,6 +38,14 @@ public class BorrowerServiceImpl implements BorrowerService {
         log.info("Borrower registered successfully with id: {}", saved.getId());
 
         return mapToResponse(saved);
+    }
+
+    @Override
+    public List<BorrowerResponse> getAllBorrowers() {
+        return borrowerRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     private BorrowerResponse mapToResponse(Borrower borrower) {

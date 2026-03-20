@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public record BorrowResponse(
         UUID loanId,
-        Long bookId,
-        Long borrowerId,
+        UUID bookId,
+        UUID borrowerId,
         String status,
         String message,
         LocalDateTime timestamp
