@@ -50,6 +50,59 @@ class BookControllerTest {
     }
 
     @Test
+    void createBook_WhenIsbnIsBlank_ShouldReturnBadRequest() throws Exception {
+        // Arrange
+        BookRequest request = new BookRequest("", "Test Title", "Test Author");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/v1/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.isbn").value("ISBN must not be blank"));
+    }
+
+    @Test
+    void createBook_WhenTitleIsBlank_ShouldReturnBadRequest() throws Exception {
+        // Arrange
+        BookRequest request = new BookRequest("1234567890", "", "Test Author");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/v1/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.title").value("Title must not be blank"));
+    }
+
+    @Test
+    void createBook_WhenAuthorIsBlank_ShouldReturnBadRequest() throws Exception {
+        // Arrange
+        BookRequest request = new BookRequest("1234567890", "Test Title", "");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/v1/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.author").value("Author must not be blank"));
+    }
+
+    @Test
+    void createBook_WhenIsbnIsTooLong_ShouldReturnBadRequest() throws Exception {
+        // Arrange
+        String longIsbn = "1".repeat(21); // Exceeds max length of 20
+        BookRequest request = new BookRequest(longIsbn, "Test Title", "Test Author");
+
+        // Act & Assert
+        mockMvc.perform(post("/api/v1/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.isbn").value("ISBN must be at most 20 characters"));
+    }
+
+    @Test
     void getAllBooks_ShouldReturnOk() throws Exception {
         // Arrange
         UUID bookId = UUID.randomUUID();

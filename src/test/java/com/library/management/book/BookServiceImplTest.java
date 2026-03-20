@@ -86,6 +86,17 @@ class BookServiceImplTest {
     }
 
     @Test
+    void saveBook_WhenExistingIsbnAndDifferentAuthor_ShouldThrowConflictException() {
+        // Arrange
+        existingBook.setAuthor("Different Author");
+        when(bookRepository.findFirstByIsbn(anyString())).thenReturn(Optional.of(existingBook));
+
+        // Act & Assert
+        assertThrows(ConflictException.class, () -> bookService.saveBook(validRequest));
+        verify(bookRepository, never()).save(any(Book.class));
+    }
+
+    @Test
     void getAllBooks_ShouldReturnListOfResponses() {
         // Arrange
         when(bookRepository.findAll()).thenReturn(List.of(existingBook));
