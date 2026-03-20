@@ -49,9 +49,7 @@ class BorrowServiceImplTest {
         bookId = UUID.randomUUID();
         borrowerId = UUID.randomUUID();
         
-        // Use UUID strings if BorrowRequest takes UUIDs, adjusting based on actual request signature
-        // assuming BorrowRequest constructor handles Long for now, updating to UUID if possible later
-        borrowRequest = new BorrowRequest(bookId, borrowerId, "Please borrow"); // Assuming signature takes long, mock will use any() if changed to UUID
+        borrowRequest = new BorrowRequest(bookId, borrowerId, "Please borrow"); 
 
         book = new Book();
         book.setId(bookId);
@@ -73,10 +71,9 @@ class BorrowServiceImplTest {
     @Test
     void borrowBook_WhenValidRequest_ShouldBorrowSuccessfully() {
         // Arrange
-        // Using any() here to be safe in case your Request/Repository uses Long vs UUID.
-        when(bookRepository.findById(any())).thenReturn(Optional.of(book));
-        when(borrowerRepository.findById(any())).thenReturn(Optional.of(borrower));
-        when(borrowRepository.existsByBookIdAndReturnedAtIsNull(any())).thenReturn(false);
+        when(bookRepository.findById(any(UUID.class))).thenReturn(Optional.of(book));
+        when(borrowerRepository.findById(any(UUID.class))).thenReturn(Optional.of(borrower));
+        when(borrowRepository.existsByBookIdAndReturnedAtIsNull(any(UUID.class))).thenReturn(false);
         when(borrowRepository.save(any(BorrowRecord.class))).thenReturn(borrowRecord);
 
         // Act
@@ -92,7 +89,7 @@ class BorrowServiceImplTest {
     @Test
     void borrowBook_WhenBookNotFound_ShouldThrowResourceNotFoundException() {
         // Arrange
-        when(bookRepository.findById(any())).thenReturn(Optional.empty());
+        when(bookRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> borrowService.borrowBook(borrowRequest));
@@ -102,8 +99,8 @@ class BorrowServiceImplTest {
     @Test
     void borrowBook_WhenBorrowerNotFound_ShouldThrowResourceNotFoundException() {
         // Arrange
-        when(bookRepository.findById(any())).thenReturn(Optional.of(book));
-        when(borrowerRepository.findById(any())).thenReturn(Optional.empty());
+        when(bookRepository.findById(any(UUID.class))).thenReturn(Optional.of(book));
+        when(borrowerRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> borrowService.borrowBook(borrowRequest));
@@ -113,9 +110,9 @@ class BorrowServiceImplTest {
     @Test
     void borrowBook_WhenBookAlreadyBorrowed_ShouldThrowConflictException() {
         // Arrange
-        when(bookRepository.findById(any())).thenReturn(Optional.of(book));
-        when(borrowerRepository.findById(any())).thenReturn(Optional.of(borrower));
-        when(borrowRepository.existsByBookIdAndReturnedAtIsNull(any())).thenReturn(true);
+        when(bookRepository.findById(any(UUID.class))).thenReturn(Optional.of(book));
+        when(borrowerRepository.findById(any(UUID.class))).thenReturn(Optional.of(borrower));
+        when(borrowRepository.existsByBookIdAndReturnedAtIsNull(any(UUID.class))).thenReturn(true);
 
         // Act & Assert
         assertThrows(ConflictException.class, () -> borrowService.borrowBook(borrowRequest));
