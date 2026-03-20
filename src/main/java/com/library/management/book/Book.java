@@ -27,5 +27,5 @@ public class Book {
     private String author;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();;
 }
