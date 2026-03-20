@@ -4,6 +4,8 @@ import com.library.management.book.Book;
 import com.library.management.borrower.Borrower;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+import java.util.UUID;
 
 import java.time.LocalDateTime;
 
@@ -17,20 +19,37 @@ import java.time.LocalDateTime;
 public class BorrowRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    @UuidGenerator
+    @Column(updatable = false, nullable = false)
+    private UUID loadId;
+//    @Id
+//    @GeneratedValue
+//    @UuidGenerator
+//    @Column(updatable = false, nullable = false)
+//    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "borrower_id", nullable = false)
     private Borrower borrower;
 
+    private String message;
+
+    @Enumerated(EnumType.STRING)
+    private LoanStatus status = LoanStatus.BORROWED;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    @Column(nullable = false)
-    private LocalDateTime borrowedAt = LocalDateTime.now();;
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime borrowedAt;
 
     @Column
     private LocalDateTime returnedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.borrowedAt = LocalDateTime.now();
+    }
 }
