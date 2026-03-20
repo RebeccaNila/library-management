@@ -1,4 +1,4 @@
-package com.library.management.borrower.models;
+package com.library.management.borrower;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,7 +6,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "borrowers")
+@Table(name = "borrowers",
+        uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Getter
 @Setter
 @NoArgsConstructor

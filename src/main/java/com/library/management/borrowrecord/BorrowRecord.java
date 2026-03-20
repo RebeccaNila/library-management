@@ -1,7 +1,7 @@
 package com.library.management.borrowrecord;
 
 import com.library.management.book.Book;
-import com.library.management.borrower.models.Borrower;
+import com.library.management.borrower.Borrower;
 import jakarta.persistence.*;
 import lombok.*;
 
