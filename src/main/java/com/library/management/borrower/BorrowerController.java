@@ -1,6 +1,5 @@
 package com.library.management.borrower;
 
-import com.library.management.book.BookResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class BorrowerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BorrowerResponse>> getAllBooks() {
+    public ResponseEntity<List<BorrowerResponse>> getAllBorrowers() {
         return ResponseEntity.ok(borrowerService.getAllBorrowers());
     }
 }

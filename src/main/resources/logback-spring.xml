@@ -2,7 +2,7 @@
 <configuration>
     <!-- Define log folder relative to the project root -->
     <property name="LOG_PATH" value="logs" />
-    <property name="LOG_FILE_NAME" value="application.log" />
+    <property name="LOG_FILE_NAME" value="library-management.log" />
 
     <!-- Console Appender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
