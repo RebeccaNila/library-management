@@ -35,6 +35,17 @@ A Spring Boot-based RESTful API for managing a library. This system handles book
 
 ---
 
+## Documentation
+
+For deep-dive documentation on the architecture and design decisions of this project, please see the `docs/` folder:
+
+* [**Assumptions & Design Decisions**](ASSUMPTIONS.md) — Detailed rationale for database choice, ISBN rules, and constraints.
+* [**Architecture & Design**](docs/architecture.md) — Explanation of the layered architecture, design patterns (DTOs, Repository), and deployment flow.
+* [**Database Design**](docs/database-design.md) — Entity Relationship diagrams and table definitions.
+* [**12-Factor App Conformance**](docs/12-factor.md) — How this project aligns with modern scalable SaaS methodology.
+
+---
+
 ## Project Structure
 
 ```
@@ -42,6 +53,10 @@ library-management/
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
+├── docs/
+│   ├── 12-factor.md
+│   ├── architecture.md
+│   └── database-design.md
 ├── src/
 │   ├── main/
 │   │   ├── java/com/library/management/
@@ -392,9 +407,8 @@ Build application
 
 ---
 
-## Assumptions & Design Decisions
-
-See [ASSUMPTIONS.md](ASSUMPTIONS.md) for detailed documentation of all assumptions and design decisions made during development (e.g., Database choice, ISBN Multi-copy logic, and Borrowing Constraints).
+## Development Notes
+This project was developed with AI assistance for guidance on best practices, debugging, and documentation. All architectural decisions, code reviews, and implementations were made by the developer.
 
 ---
 
