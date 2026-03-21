@@ -42,6 +42,9 @@ build/
 *.log
 logs/
 
+# Secrets
+.env
+
 
 # Package Files #
 *.jar
