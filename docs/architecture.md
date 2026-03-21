@@ -1,4 +1,4 @@
-# 🏗️ Architecture & Design
+# Architecture & Design
 
 This document describes the architecture, design patterns, and technical decisions
 made in the Library Management System.
@@ -195,7 +195,7 @@ Unit Tests (JUnit 5 + Mockito)
     ├── Response format
     └── Validation behavior
 
-Coverage: 82% (JaCoCo)
+Coverage: 89% (JaCoCo)
 ```
 
 ---

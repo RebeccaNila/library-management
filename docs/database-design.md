@@ -1,4 +1,4 @@
-# 🗄️ Database Design
+#  Database Design
 
 This document describes the database schema, table relationships, and design decisions
 for the Library Management System.
@@ -173,21 +173,21 @@ public enum LoanStatus {
 ### Borrowers
 ```sql
 INSERT INTO borrowers (borrower_id, name, email, created_at) VALUES
-('11111111-1111-1111-1111-111111111111', 'Alice Johnson', 'alice.johnson@example.com', NOW()),
-('22222222-2222-2222-2222-222222222222', 'Bob Smith', 'bob.smith@example.com', NOW());
+('8f2e91a4-5b3c-4d2a-9e1f-6a7b8c9d0e1f', 'Alice Johnson', 'alice.johnson@example.com', NOW()),
+('3d7a2b5c-9e1f-4a8b-bc2d-1e0f9a8b7c6d', 'Bob Smith', 'bob.smith@example.com', NOW());
 ```
 
 ### Books (Same ISBN — Different Copies)
 ```sql
 INSERT INTO books (book_id, isbn, title, author, created_at) VALUES
-('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '9780132350884', 'Clean Code', 'Robert C. Martin', NOW()),
-('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', '9780132350884', 'Clean Code', 'Robert C. Martin', NOW());
+('a1b2c3d4-e5f6-47a8-b9c0-d1e2f3a4b5c6', '9780132350884', 'Clean Code', 'Robert C. Martin', NOW()),
+('f9e8d7c6-b5a4-4321-9087-654321abcdef', '9780132350884', 'Clean Code', 'Robert C. Martin', NOW());
 -- Same ISBN → two separate borrowable copies ✅
 ```
 
 ### Borrow Records
 ```sql
 INSERT INTO borrow_records (loan_id, borrower_id, book_id, status, borrowed_at) VALUES
-('loan1111-...', '11111111-...', 'aaaaaaaa-...', 'BORROWED', NOW()),
--- book bbbbbbbb is still available to borrow ✅
+('7c8d9e0f-1a2b-43c4-d5e6-f7a8b9c0d1e2', 'a1b2c3d4-e5f6-47a8-b9c0-d1e2f3a4b5c6', '8f2e91a4-5b3c-4d2a-9e1f-6a7b8c9d0e1f', 'BORROWED', NOW()),
+-- book '3d7a2b5c-...' is still available to borrow ✅
 ```
