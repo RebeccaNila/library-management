@@ -42,9 +42,14 @@ build/
 *.log
 logs/
 
-# Secrets
+# Secrets & Profiles
 .env
+application-prod.properties
+application-secrets.properties
 
+# Docker Volumes
+data/
+mysql_data/
 
 # Package Files #
 *.jar
