@@ -42,8 +42,6 @@ build/
 *.log
 logs/
 
-# Profiles
-application-prod.properties
 
 # Package Files #
 *.jar
