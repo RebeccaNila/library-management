@@ -5,7 +5,7 @@ services:
     container_name: library_mysql
     restart: always
     env_file:
-      - .env
+      - ../../.env
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -14,7 +14,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./data/mysql_data:/var/lib/mysql
+      # Data will be saved in the project root /data/mysql_data
+      - ../../data/mysql_data:/var/lib/mysql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
       interval: 15s
@@ -25,12 +26,15 @@ services:
       - library-network
 
   library-management-api:
-    build: .
+    # Point the build context to the project root directory
+    build: 
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
     image: library-management:latest
     container_name: library_management_api
     restart: on-failure
     env_file:
-      - .env
+      - ../../.env
     environment:
       # Automatically activates the dev (or prod) profile
       - SPRING_PROFILES_ACTIVE=prod
@@ -41,6 +45,8 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - "${SERVER_PORT}:8080"
+    volumes:
+      - ../../logs:/api/logs  # [Host Path]:[Container Path]
     depends_on:
       library-db:
         condition: service_healthy

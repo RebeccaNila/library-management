@@ -3,7 +3,7 @@ FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /api
 
 # Copy the Maven wrapper and pom.xml first to cache dependencies
-COPY .mvn/ .mvn
+COPY .mvn .mvn
 COPY mvnw pom.xml ./
 
 # Make the wrapper executable and download dependencies (improves Docker layer caching)
