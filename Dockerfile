@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 FROM eclipse-temurin:17-jdk-alpine AS build
-WORKDIR /app
+WORKDIR /api
 
 # Copy the Maven wrapper and pom.xml first to cache dependencies
 COPY .mvn/ .mvn
@@ -16,13 +16,18 @@ RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Create the optimized production image
 FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
+
+# Add non-root user for security
+RUN addgroup -S apigroup && adduser -S apiuser -G apigroup
+USER apiuser
+
+WORKDIR /api
 
 # Copy the compiled jar from the build stage
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /api/target/*.jar library-management-api.jar
 
 # Expose the port the application runs on
 EXPOSE 8080
 
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "library-management-api.jar"]

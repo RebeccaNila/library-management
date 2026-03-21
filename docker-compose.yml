@@ -1,5 +1,4 @@
-version: '3.8'
-
+name: 'library-management'
 services:
   library-db:
     image: mysql:8.0
@@ -21,11 +20,15 @@ services:
       interval: 15s
       timeout: 10s
       retries: 10
-      start_period: 30s   # ← added, gives MySQL time to initialize
+      start_period: 30s   # Gives MySQL time to initialize
+    networks:
+      - library-network
 
-  library-api:
+  library-management-api:
     build: .
-    container_name: library_api
+    image: library-management:latest
+    container_name: library_management_api
+    restart: on-failure
     env_file:
       - .env
     environment:
@@ -41,4 +44,9 @@ services:
     depends_on:
       library-db:
         condition: service_healthy
+    networks:
+      - library-network
 
+networks:
+  library-network:
+    driver: bridge
