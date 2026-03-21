@@ -44,8 +44,7 @@ logs/
 
 # Secrets & Profiles
 .env
-application-prod.properties
-application-secrets.properties
+deployment/k8s/secret.yml
 
 # Docker Volumes
 data/

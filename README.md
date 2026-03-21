@@ -46,11 +46,13 @@ library-management/
 │   │       ├── application-dev.properties
 │   │       └── application-prod.properties
 │   └── test/
+├── deployment/
+│   └── docker/
+│       ├── docker-compose.yml
+│       └── Dockerfile
 ├── .env.template
 ├── .gitignore
 ├── ASSUMPTIONS.md
-├── docker-compose.yml
-├── Dockerfile
 └── pom.xml
 ```
 
@@ -122,7 +124,7 @@ MYSQL_PASSWORD=yourpassword
 
 **3. Build and run**
 ```bash
-docker compose up --build
+docker compose -f deployment/docker/docker-compose.yml up --build
 ```
 *Note: This utilizes a multi-stage `Dockerfile` to build the Java application dynamically. You do not need Java or Maven installed on your host machine to run this via Docker. The Docker Compose file automatically spins up a MySQL database and links it to the API.*
 
@@ -134,7 +136,7 @@ http://localhost:8080/swagger-ui.html
 
 **5. Stop the containers**
 ```bash
-docker compose down
+docker compose -f deployment/docker/docker-compose.yml down
 ```
 
 ---

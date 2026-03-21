@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: library-management
+spec:
+  accessModes:
+    - ReadWriteOnce          # ← one pod can read/write
+  resources:
+    requests:
+      storage: 1Gi           # ← request 1GB storage
+  storageClassName: hostpath # ← docker-desktop storage class

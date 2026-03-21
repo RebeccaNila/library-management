@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: library-api-service
+  namespace: library-management
+spec:
+  selector:
+    app: library-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080       # ← access via localhost:30080
+  type: NodePort

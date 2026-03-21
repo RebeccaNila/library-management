@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-api-deployment
+  namespace: library-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: library-api
+  template:
+    metadata:
+      labels:
+        app: library-api
+    spec:
+      containers:
+        - name: library-api
+          image: library-management-api:latest
+          imagePullPolicy: Never        # ← use local Docker image
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: library-config    # ← loads all config
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: DB_URL
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: MYSQL_DATABASE
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: MYSQL_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: MYSQL_PASSWORD

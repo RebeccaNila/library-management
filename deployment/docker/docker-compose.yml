@@ -30,7 +30,7 @@ services:
     build: 
       context: ../../
       dockerfile: deployment/docker/Dockerfile
-    image: library-management:latest
+    image: library-management-api:latest
     container_name: library_management_api
     restart: on-failure
     env_file:
