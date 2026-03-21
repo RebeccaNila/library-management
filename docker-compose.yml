@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  library-db:
+    image: mysql:8.0
+    container_name: library_mysql
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s   # ← added, gives MySQL time to initialize
+
+  library-api:
+    build: .
+    container_name: library_api
+    env_file:
+      - .env
+    environment:
+      # Automatically activates the dev (or prod) profile
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_URL=jdbc:mysql://library-db:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DB_USERNAME=${MYSQL_USERNAME}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - SERVER_PORT=${SERVER_PORT}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "${SERVER_PORT}:8080"
+    depends_on:
+      library-db:
+        condition: service_healthy
+

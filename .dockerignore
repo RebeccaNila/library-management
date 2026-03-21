@@ -1,0 +1,26 @@
+# Build and output directories
+target/
+out/
+build/
+.gradle/
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Logs
+logs/
+*.log
+
+# Secrets and environment files
+.env
+application-prod.properties
+application-secrets.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
