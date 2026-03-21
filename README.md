@@ -13,17 +13,25 @@ A Spring Boot-based RESTful API for managing a library. This system handles book
 * **API Documentation:** Integrated with OpenAPI (Swagger) for easy endpoint testing and exploration.
 * **Robust Error Handling:** Global exception handling for missing resources, conflicts, and validation errors.
 * **Unit Testing:** Comprehensive test coverage for service and controller layers using JUnit 5 and Mockito.
-* **Containerization:** Fully dockerized with a multi-stage build and `docker-compose` integration.
+* **Containerization & Orchestration:** Fully dockerized with a multi-stage build, `docker-compose` integration, and Kubernetes manifests for production deployment.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-* **Java 17**
-* **Spring Boot 3.x** (Web, Data JPA, Validation)
-* **MySQL 8.0** for relational data persistence
-* **Docker & Docker Compose** for containerization
-* **Springdoc OpenAPI / Swagger UI** for API documentation
-* **JUnit 5 & Mockito** for unit testing (`@WebMvcTest`, `@MockitoBean`, etc.)
-* **Maven** for dependency management
+| Technology      | Version  | Purpose                        |
+|-----------------|----------|--------------------------------|
+| Java            | 17       | Programming language           |
+| Spring Boot     | 3.x      | Application framework          |
+| Spring Data JPA | 3.x      | Database ORM                   |
+| MySQL           | 8.0      | Relational database            |
+| Maven           | 3.x      | Dependency management          |
+| Docker          | latest   | Containerization               |
+| Docker Compose  | latest   | Multi-container orchestration  |
+| Kubernetes      | v1.34.1  | Container orchestration        |
+| JUnit 5         | 5.x      | Unit testing                   |
+| Mockito         | latest   | Mocking framework              |
+| JaCoCo          | latest   | Test coverage (89%)            |
+| Swagger/OpenAPI | 3.x      | API documentation              |
+| GitHub Actions  | latest   | CI/CD pipeline                 |
 
 ---
 
@@ -47,9 +55,18 @@ library-management/
 │   │       └── application-prod.properties
 │   └── test/
 ├── deployment/
-│   └── docker/
-│       ├── docker-compose.yml
-│       └── Dockerfile
+│   ├── docker/
+│   │   ├── docker-compose.yml
+│   │   └── Dockerfile
+│   └── k8s/
+│       ├── namespace.yml
+│       ├── configmap.yml
+│       ├── secret.template.yml
+│       ├── mysql-pvc.yml
+│       ├── mysql-deployment.yml
+│       ├── mysql-service.yml
+│       ├── api-deployment.yml
+│       └── api-service.yml
 ├── .env.template
 ├── .gitignore
 ├── ASSUMPTIONS.md
@@ -68,6 +85,10 @@ library-management/
 #### Run with Docker
 - Docker
 - Docker Compose
+
+#### Run with Kubernetes
+- Docker Desktop with Kubernetes enabled
+- `kubectl` CLI
 
 ---
 
@@ -98,16 +119,15 @@ Ensure your local MySQL credentials match the `application-dev.properties`.
   ```cmd
   mvnw.cmd spring-boot:run
   ```
-
-### Option 2 — Run with Docker (Recommended)
-
-**1. Clone the repository**
-```bash
-git clone https://github.com/RebeccaNila/library-management.git
-cd library-management
+**5. Access the API**
 ```
+http://localhost:8080/api
+```
+---
 
-**2. Create your `.env` file**
+### Option 2 — Run with Docker (Recommended for Dev)
+
+**1. Create your `.env` file**
 ```bash
 cp .env.template .env
 ```
@@ -122,31 +142,116 @@ MYSQL_USERNAME=library_user
 MYSQL_PASSWORD=yourpassword
 ```
 
-**3. Build and run**
+**2. Build and run**
 ```bash
-docker compose -f deployment/docker/docker-compose.yml up --build
+docker compose -f deployment/docker/docker-compose.yml up --build -d
 ```
-*Note: This utilizes a multi-stage `Dockerfile` to build the Java application dynamically. You do not need Java or Maven installed on your host machine to run this via Docker. The Docker Compose file automatically spins up a MySQL database and links it to the API.*
+*Note: This utilizes a multi-stage `Dockerfile` to build the Java application dynamically. You do not need Java or Maven installed on your host machine to run this via Docker.*
 
-**4. Access the API Documentation**
+**3. Access the API Documentation**
 Navigate to the Swagger UI:
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
-**5. Stop the containers**
+**4. Stop the containers**
 ```bash
 docker compose -f deployment/docker/docker-compose.yml down
 ```
 
 ---
 
+### Option 3 — Run with Kubernetes (Production Ready)
+
+Why Kubernetes?
+Docker Compose is great for local development but Kubernetes provides:
+- **Self healing** — automatically restarts crashed pods
+- **Scalability** — easily scale replicas up or down
+- **Declarative config** — define desired state in YAML files
+- **Persistent storage** — MySQL data survives pod restarts via PersistentVolumeClaims
+
+**1. Create `secret.yml` from template**
+```bash
+cp deployment/k8s/secret.template.yml deployment/k8s/secret.yml
+```
+
+**2. Generate base64 values for your secrets**
+*Windows PowerShell:*
+```powershell
+[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("yourvalue"))
+```
+*Mac/Linux:*
+```bash
+echo -n "yourvalue" | base64
+```
+
+Fill in your values in `deployment/k8s/secret.yml`:
+```yaml
+data:
+  MYSQL_ROOT_PASSWORD: <base64-root-password>
+  MYSQL_USER: <base64-username>
+  MYSQL_PASSWORD: <base64-password>
+  DB_URL: <base64-db-url>
+  MYSQL_DATABASE: <base64-db-name>
+```
+
+**3. Build Docker Image**
+```bash
+docker build -t library-management-api:latest -f deployment/docker/Dockerfile .
+```
+
+**4. Apply Kubernetes Files**
+Apply in order (first time):
+```bash
+kubectl apply -f deployment/k8s/namespace.yml
+kubectl apply -f deployment/k8s/configmap.yml
+kubectl apply -f deployment/k8s/secret.yml
+kubectl apply -f deployment/k8s/mysql-pvc.yml
+kubectl apply -f deployment/k8s/mysql-deployment.yml
+kubectl apply -f deployment/k8s/mysql-service.yml
+kubectl apply -f deployment/k8s/api-deployment.yml
+kubectl apply -f deployment/k8s/api-service.yml
+```
+*(For subsequent updates, you can just run: `kubectl apply -f deployment/k8s/`)*
+
+**5. Verify Everything Running**
+```bash
+kubectl get all -n library-management
+```
+*Expected output should show pods for `mysql-deployment` and `library-api-deployment` as `Running`.*
+
+**6. Access the API**
+Because the API is exposed via a NodePort service, access it here:
+```
+http://localhost:30080/api
+```
+Swagger UI:
+```
+http://localhost:30080/swagger-ui/index.html
+```
+
+**7. Useful kubectl Commands**
+```bash
+# Check logs
+kubectl logs -f deployment/library-api-deployment -n library-management
+
+# Restart app only
+kubectl rollout restart deployment/library-api-deployment -n library-management
+
+# Delete everything including PVC (wipes DB data)
+kubectl delete all --all -n library-management
+kubectl delete pvc --all -n library-management
+```
+
+---
+
 ## API Documentation
 
-Once the application is running, you can access the Swagger UI to view and interact with the API endpoints.
-
+Once the application is running locally or via Docker, you can access the Swagger UI:
 * **Swagger UI:** `http://localhost:8080/swagger-ui.html`
 * **OpenAPI JSON:** `http://localhost:8080/v3/api-docs`
+
+*(If running via Kubernetes, use `http://localhost:30080/swagger-ui/index.html`)*
 
 ---
 
