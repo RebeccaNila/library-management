@@ -17,21 +17,20 @@ A Spring Boot-based RESTful API for managing a library. This system handles book
 
 ## 🛠️ Tech Stack
 
-| Technology      | Version  | Purpose                        |
-|-----------------|----------|--------------------------------|
-| Java            | 17       | Programming language           |
-| Spring Boot     | 3.x      | Application framework          |
-| Spring Data JPA | 3.x      | Database ORM                   |
-| MySQL           | 8.0      | Relational database            |
-| Maven           | 3.x      | Dependency management          |
-| Docker          | latest   | Containerization               |
-| Docker Compose  | latest   | Multi-container orchestration  |
-| Kubernetes      | v1.34.1  | Container orchestration        |
-| JUnit 5         | 5.x      | Unit testing                   |
-| Mockito         | latest   | Mocking framework              |
-| JaCoCo          | latest   | Test coverage (89%)            |
-| Swagger/OpenAPI | 3.x      | API documentation              |
-| GitHub Actions  | latest   | CI/CD pipeline                 |
+| Technology      | Version | Purpose                        |
+|-----------------|---------|--------------------------------|
+| Java            | 17      | Programming language           |
+| Spring Boot     | 3.x     | Application framework          |
+| Spring Data JPA | 3.x     | Database ORM                   |
+| MySQL           | 8.0     | Relational database            |
+| Maven           | 3.x     | Dependency management          |
+| Docker          | 29.x    | Containerization               |
+| Docker Compose  | v5.x    | Multi-container orchestration  |
+| Kubernetes      | v1.34.1 | Container orchestration        |
+| JUnit 5         | 5.x     | Unit testing                   |
+| Mockito         | latest  | Mocking framework              |
+| JaCoCo          | latest  | Test coverage (89%)            |
+| GitHub Actions  | latest  | CI/CD pipeline                 |
 
 ---
 
