@@ -56,7 +56,7 @@ public class BorrowServiceImpl implements BorrowService {
                 saved.getBook().getId(),
                 saved.getBorrower().getId(),
                 saved.getStatus().name(),
-                "Book borrowed successfully. Please return it on time.",
+                "Book borrowed successfully.",
                 saved.getBorrowedAt()
         );
     }

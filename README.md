@@ -131,7 +131,7 @@ Ensure your local MySQL credentials match the `application-dev.properties`.
   ```
 * **Windows:**
   ```cmd
-  mvnw.cmd spring-boot:run
+  mvn spring-boot:run
   ```
 **5. Access the API**
 ```
@@ -158,7 +158,7 @@ MYSQL_PASSWORD=yourpassword
 
 **2. Build and run**
 ```bash
-docker compose -f deployment/docker/docker-compose.yml up --build -d
+docker-compose -f deployment/docker/docker-compose.yml --env-file .env up --build -d
 ```
 *Note: This utilizes a multi-stage `Dockerfile` to build the Java application dynamically. You do not need Java or Maven installed on your host machine to run this via Docker.*
 
@@ -170,7 +170,7 @@ http://localhost:8080/swagger-ui.html
 
 **4. Stop the containers**
 ```bash
-docker compose -f deployment/docker/docker-compose.yml down
+docker compose -f deployment/docker/docker-compose.yml --env-file .env down 
 ```
 
 ---

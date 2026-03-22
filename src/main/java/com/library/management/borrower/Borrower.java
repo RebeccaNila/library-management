@@ -20,7 +20,7 @@ public class Borrower {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID) // or your existing strategy
     @JdbcTypeCode(java.sql.Types.VARCHAR)           // Force storage as VARCHAR
-    @Column(name="borrow_id", length = 36, updatable = false, nullable = false)
+    @Column(name="borrower_id", length = 36, updatable = false, nullable = false)
     private UUID id;
 
     @Column(nullable = false)

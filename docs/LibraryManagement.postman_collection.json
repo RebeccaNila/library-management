@@ -1,0 +1,180 @@
+{
+  "info": {
+    "_postman_id": "9b5b0a7a-6b62-4ac4-84db-aa318ab9263f",
+    "name": "LibraryManagement",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "10409287"
+  },
+  "item": [
+    {
+      "name": "Book",
+      "item": [
+        {
+          "name": "BookList",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/books",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "books"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Book",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"isbn\" : \"978-3-16-148410-5\",\r\n    \"title\": \"Above and Beyond\",\r\n    \"author\": \"Shiv Kumar Mohanka\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/books",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "books"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Borrower",
+      "item": [
+        {
+          "name": "BorrowerList",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/borrowers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "borrowers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Borrower",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"James\",\r\n    \"email\": \"james@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/borrowers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "borrowers"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Borrow Record",
+      "item": [
+        {
+          "name": "ReturnBook",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/loans/c0e1e18f-dee5-4d0f-8f62-0b68114362c8/return",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "loans",
+                "c0e1e18f-dee5-4d0f-8f62-0b68114362c8",
+                "return"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrow Book",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bookId\" : \"2930b586-076e-4a6e-b35a-da59aa54c82e\",\r\n    \"borrowerId\": \"5fd5ef32-6404-461e-ae2c-7d4ccafd9250\",\r\n    \"message\": \"Test\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/loans",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "loans"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
