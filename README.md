@@ -407,7 +407,7 @@ Build application
 ---
 
 ## Development Notes
-This project was developed with AI assistance for guidance on best practices, debugging, and documentation. All architectural decisions, code reviews, and implementations were made by the developer.
+This project was developed with AI assistance for guidance on best practices, debugging, and documentation. All architectural decisions, code development, and implementations were made by the developer.
 
 ---
 
